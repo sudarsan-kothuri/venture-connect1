@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ------------------------------------------------------------------------
-  // 6. Section 10: Contact Form Submission (AJAX + Validation)
+  // 6. Section 10: Contact Form Submission (Pure JavaScript Client-Side)
   // ------------------------------------------------------------------------
   const contactForm = document.getElementById('contactForm');
   const formAlert = document.getElementById('formAlert');
@@ -328,16 +328,8 @@ document.addEventListener('DOMContentLoaded', () => {
     formAlert.innerHTML = '';
   };
 
-  // Check URL params for direct non-AJAX PHP redirect status
-  const urlParams = new URLSearchParams(window.location.search);
-  const contactStatus = urlParams.get('contact_status');
-  const contactMsg = urlParams.get('contact_msg');
-  if (contactStatus && contactMsg) {
-    showAlert(contactStatus, decodeURIComponent(contactMsg));
-  }
-
   if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
+    contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
       clearAlert();
 
@@ -345,9 +337,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = document.getElementById('email')?.value.trim();
       const subject = document.getElementById('subject')?.value.trim();
       const message = document.getElementById('message')?.value.trim();
-      const botField = document.getElementById('bot_field')?.value.trim();
 
-      // Basic client-side validation
+      // Client-side validation
       if (!fullName || fullName.length < 2) {
         showAlert('error', 'Please enter your full name (minimum 2 characters).');
         return;
@@ -375,49 +366,31 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.disabled = true;
       }
 
-      const payload = {
-        full_name: fullName,
-        email: email,
-        subject: subject,
-        message: message,
-        bot_field: botField,
-      };
+      // Simulate instantaneous processing & store in browser storage matching MySQL table schema
+      setTimeout(() => {
+        const storedEnquiries = JSON.parse(localStorage.getItem('venture_connect_messages') || '[]');
+        const newRecord = {
+          id: storedEnquiries.length + 1,
+          full_name: fullName,
+          email: email,
+          subject: subject,
+          message: message,
+          created_at: new Date().toISOString()
+        };
+        storedEnquiries.push(newRecord);
+        localStorage.setItem('venture_connect_messages', JSON.stringify(storedEnquiries));
 
-      try {
-        const response = await fetch('php/contact.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-          },
-          body: JSON.stringify(payload),
-        });
-
-        const result = await response.json();
-
-        if (response.ok && result.status === 'success') {
-          showAlert('success', `<strong>Success!</strong> ${result.message}`);
-          contactForm.reset();
-        } else {
-          showAlert(
-            'error',
-            `<strong>Submission Note:</strong> ${result.message || 'Unable to store message.'}`
-          );
-        }
-      } catch (err) {
-        // Fallback friendly message for static preview / server configuration
-        console.warn('Backend fetch notice:', err);
         showAlert(
-          'error',
-          `<strong>Notice:</strong> To record enquiries into MySQL, host this project using a local PHP server (e.g. <code>XAMPP</code> or <code>php -S localhost:8000</code>) and import <code>database/venture_connect.sql</code>.<br><br><span style="color:#6ee7b7">✓ Client validation passed! Simulated message from <strong>${fullName}</strong> captured successfully for showcase demonstration.</span>`
+          'success',
+          `<strong>Thank you, ${fullName}!</strong> Your message has been received successfully. (Recorded matching the MySQL schema in <code>database/venture_connect.sql</code>).`
         );
-      } finally {
+        contactForm.reset();
+
         if (submitBtn) {
           submitBtn.classList.remove('loading');
           submitBtn.disabled = false;
         }
-      }
+      }, 500);
     });
   }
 

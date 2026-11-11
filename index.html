@@ -1198,7 +1198,7 @@
             </div>
 
             <div class="contact-tech-note">
-              <strong>Database Integration:</strong> Form submissions are handled securely by <code>php/contact.php</code> and stored in MySQL using prepared statements.
+              <strong>Database Architecture:</strong> Contact messages schema is defined in <code>database/venture_connect.sql</code> for MySQL administration and submissions.
             </div>
           </div>
 
@@ -1207,7 +1207,7 @@
             <!-- Dynamic Alert Box -->
             <div id="formAlert" class="form-alert" role="alert"></div>
 
-            <form id="contactForm" action="php/contact.php" method="POST" novalidate>
+            <form id="contactForm" novalidate>
               <!-- Anti-spam Honeypot Field -->
               <input type="text" name="bot_field" id="bot_field" class="hidden-bot-field" tabindex="-1" autocomplete="off">
 
