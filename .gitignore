@@ -1,0 +1,18 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment / Local settings
+.env
+.env.local
+
+# Editor directories
+.vscode/
+.idea/
+
+# Local server logs
+*.log
+
+# Temporary files
+test.txt

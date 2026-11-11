@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="vcGrad1" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+    <linearGradient id="vcGrad2" x1="80" y1="20" x2="20" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Glowing outer orbit -->
+  <circle cx="50" cy="50" r="42" stroke="url(#vcGrad1)" stroke-width="2" stroke-dasharray="4 6" opacity="0.4" />
+  
+  <!-- Intersecting geometric "V" and "C" nodes -->
+  <!-- Left wing: V -->
+  <path d="M 22 26 L 50 78 L 78 26" stroke="url(#vcGrad1)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Inner connection arc: C -->
+  <path d="M 72 38 C 65 30 54 26 44 28 C 30 31 22 44 24 58 C 26 70 36 78 48 78 C 58 78 68 72 74 62" 
+        stroke="url(#vcGrad2)" stroke-width="4.5" stroke-linecap="round" fill="none" opacity="0.85" />
+        
+  <!-- Glowing Connection Nodes -->
+  <circle cx="22" cy="26" r="5" fill="#38bdf8" filter="url(#glow)" />
+  <circle cx="78" cy="26" r="5" fill="#c084fc" filter="url(#glow)" />
+  <circle cx="50" cy="78" r="6" fill="#818cf8" filter="url(#glow)" />
+  <circle cx="50" cy="46" r="3.5" fill="#38bdf8" />
+</svg>
